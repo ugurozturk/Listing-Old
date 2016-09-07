@@ -1,0 +1,100 @@
+﻿@{
+    ViewBag.Title = "List";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    select{
+        color:black
+    }
+</style>
+
+<div id="listListContainer"></div>
+<script type="text/javascript">
+ 
+    $(document).ready(function () {
+
+        //Prepare jtable plugin
+        $('#listListContainer').jtable({
+            title: 'Student List',
+            paging: true,
+            pageSize: 20,
+            sorting: true,
+            defaultSorting: 'list_id DESC',
+            selecting: true, //Enable selecting
+            multiselect: false, //Allow multiple selecting
+            selectingCheckboxes: true, //Show checkboxes on first column
+            //selectOnRowClick: false, //Enable this to only select using checkboxes
+            actions: {
+                listAction: '@Url.Action("jListList")',
+                deleteAction: '@Url.Action("jDelList")',
+                updateAction: '@Url.Action("jUpdateList")',
+                createAction: '@Url.Action("jCreateList")'
+            },
+            fields: {
+                list_id: {
+                    key: true,
+                    create: false,
+                    edit: false,
+                    list: false
+                },
+                name: {
+                    title: 'name',
+                    width: '23%',
+                    inputClass: 'validate[required]'
+                },
+                episode: {
+                    title: 'Episode',
+                    list: true,
+                    sorting: false,
+                    inputClass: 'validate[required]'
+                },
+                list_type_id: {
+                    title: 'Type',
+                    width: '15%',
+                    options: '@Url.Action("getListTypeOptions")',
+                    sorting: false
+                },
+                aktif: {
+                    title: 'Status',
+                    width: '12%',
+                    type: 'checkbox',
+                    values: { 'false': 'Passive', 'true': 'Active' },
+                    defaultValue: 'true',
+                    sorting: false
+                },
+                release_date: {
+                    title: 'Release date',
+                    width: '15%',
+                    type: 'date',
+                    displayFormat: 'dd/mm/yy',
+                    create: true,
+                    edit: true,
+                    sorting: false
+                }
+            },
+            //Register to selectionChanged event to hanlde events
+            selectionChanged: function () {
+                //Get all selected rows
+                var $selectedRows = $('#listListContainer').jtable('selectedRows');
+
+                $('#SelectedRowList').empty();
+                if ($selectedRows.length > 0) {
+                    //Show selected rows
+                    $selectedRows.each(function () {
+                        var record = $(this).data('record');
+                        $('#SelectedRowList').append(
+                        '<b>StudentId</b>: ' + record.StudentId +
+                        '<br /><b>Name</b>:' + record.Name + '<br /><br />'
+                        );
+                    });
+                }
+            }
+        });
+
+        //Load student list from server
+        $('#listListContainer').jtable('load');
+    });
+    
+</script>
+

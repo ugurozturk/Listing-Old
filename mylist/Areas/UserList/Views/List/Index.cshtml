@@ -1,0 +1,42 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    <title>Index</title>
+</head>
+<body>
+    
+    @Html.Partial("listnav")
+    @Html.Partial("addListView")
+    
+    <div class="container"> 
+                @{ var tur = ViewBag.Tur; }
+                @if (tur == "games") {
+                    @Html.Partial("games")
+                }
+                else if(tur== "animes")
+                {
+                    @Html.Partial("animes")
+                }
+                else if (tur == "movies")
+                {
+                    @Html.Partial("movies")
+                }
+                else if (tur == "tvseries")
+                {
+                    @Html.Partial("tvseries")
+                }
+    </div>
+
+    
+    @Scripts.Render("~/bundles/bootstrap")
+</body>
+</html>

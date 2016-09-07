@@ -1,0 +1,112 @@
+﻿
+@{
+    ViewBag.Title = "addList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (Session["userID"] == null)
+{
+    <script>
+        alert("Önce üye girişi yapınız.");
+        location.href = "/Login";
+    </script>
+    
+}
+
+@if (ViewBag.sonuc != null)
+{
+    <script>
+        alert('@ViewBag.sonuc');
+    </script>
+}
+
+<h2>Add to List</h2>
+
+<b>IMPORTANT!</b> Please be SURE the list is NOT in our database before you attempt to add it. Moderators will approve your submission if it isn't already in our database.
+
+@using (Html.BeginForm())
+{ 
+<table class="table">
+    <thead>
+        <tr>
+            <th class="col-md-1"></th>
+            <th class="col-md-6"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                Series Title*
+            </td>
+            <td>
+                <input type="text" id="seriestitle" name="seriestitle" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Series Type*
+            </td>
+            <td>
+                @Html.DropDownList("listTypes", ViewBag.listTypes as SelectList)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Total Episode
+            </td>
+            <td>
+                <input type="text" id="episode" name="episode" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Release Date
+            </td>
+            <td>
+                <input type="text" id="datepicker" name="datepicker" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Add to your list ?
+            </td>
+            <td>
+                <input type="checkbox" id="addlistcheck" name="addlistcheck" />
+            </td>
+        </tr>
+
+    </tbody>
+
+    <tbody id="listonme" style="display:none">
+        <tr>
+            <td>
+                Series Status*
+            </td>
+            <td>
+                <select id="liststatus" name="liststatus"></select>
+            </td>
+        </tr>
+    </tbody>
+  
+</table>
+<input type="submit" value="Add"/>
+}
+
+<script>
+  $(function() {
+      $("#datepicker").datepicker({ dateFormat: '@System.Globalization.CultureInfo.CurrentUICulture.DateTimeFormat.ShortDatePattern.Replace("M", "m").Replace("yy", "y")' });
+  });
+
+    $("#addlistcheck").change(function () {
+        if ($("#addlistcheck").is(':checked')) {
+            $('#listonme').show();
+
+            $("#liststatus").CascadingDropDown("#listTypes", '/EvrenselKodlar/baglistatusgetir');
+
+        }
+        else {
+            $('#listonme').hide();
+        }
+    });
+</script>
+
+

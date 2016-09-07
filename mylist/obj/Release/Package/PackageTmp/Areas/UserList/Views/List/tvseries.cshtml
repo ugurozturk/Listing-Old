@@ -1,0 +1,34 @@
+﻿<h2>Tv Series</h2>
+
+<div id="watchingtvseriesTable"></div>
+<br />
+<div id="completetvseriesTable"></div>
+<br />
+<div id="plantowatchtvseriesTable"></div>
+<br />
+<div id="onholdtvseriesTable"></div>
+<br />
+<div id="droppedtvseriesTable"></div>
+@if (Session["UserName"] != null && Session["UserName"].Equals(ViewBag.username))
+{
+<script type="text/javascript">
+    var username = '@ViewBag.username';
+    $('#watchingtvseriesTable').jtablelistload(username, '3', '11', 'Watching',1);
+    $('#completetvseriesTable').jtablelistload(username, '3', '12', 'Completed',1);
+    $('#plantowatchtvseriesTable').jtablelistload(username, '3', '15', 'Plan to Watch',1);
+    $('#onholdtvseriesTable').jtablelistload(username, '3', '13', 'On Hold',1);
+    $('#droppedtvseriesTable').jtablelistload(username, '3', '14', 'Dropped',1);
+</script>
+}
+else
+{
+    <script type="text/javascript">
+        var username = '@ViewBag.username';
+        $('#watchingtvseriesTable').jtablelistload(username, '3', '11', 'Watching',0);
+        $('#completetvseriesTable').jtablelistload(username, '3', '12', 'Completed',0);
+        $('#plantowatchtvseriesTable').jtablelistload(username, '3', '15', 'Plan to Watch',0);
+        $('#onholdtvseriesTable').jtablelistload(username, '3', '13', 'On Hold',0);
+        $('#droppedtvseriesTable').jtablelistload(username, '3', '14', 'Dropped',0);
+    </script>
+}
+

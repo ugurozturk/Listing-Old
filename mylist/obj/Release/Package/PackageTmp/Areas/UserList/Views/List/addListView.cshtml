@@ -1,0 +1,290 @@
+﻿
+<script>
+    $("#addtolistbtn").click(function () {
+        
+        $("#addlistdialog").dialog({
+            autoOpen: false,
+            position: { my: "center", at: "top+350", of: window },
+            closeOnEscape: true,
+            width: "66%",
+            height: "auto",
+            maxHeight: 550,
+            resizable: false,
+            title: 'Add to List',
+            modal: true,
+            buttons: {
+                "Cancel": function () {
+                    $("#addlistdialog").dialog('close');
+                }
+            }
+        });
+
+        $("#addlistdialog").dialog("open");
+        getRecentAdded();
+    });
+</script>
+
+
+<div id="addlistdialog">
+    <div class="row" id="addlistrow">
+        <div class="col-md-4">
+             
+            <input type="text" id="urunaraTxt" name="urunaraTxt" />
+            <input type="submit" id="urunaraBtn" value=" Ara " />
+            
+            <div id="recentadded">
+                
+            </div>
+        </div>
+        <div class="col-md-8" id="urunsonucTxt" >
+            <div id="sonuctvseries"></div>
+            <div id="sonucmovies"></div>
+            <div id="sonucanimes"></div>
+            <div id="sonucgames"></div>
+         </div>
+       
+    </div>
+    <div class="text-right" id="askdidntfound"></div>
+</div>
+
+<script>
+    function getRecentAdded() {
+        $('#recentadded').empty();
+        $.ajax({
+            url: '/EvrenselKodlar/recentAddedList',
+            type: "POST",
+            dataType: "Json",
+            data: { username: $("#urunaraTxt").val() },
+            success: function (data) {
+                $('#recentadded').append('<h3>Recent Added</h3>');
+                for (var i = 0; i < data.sonuc.length; i++) {
+                    $('#recentadded').append(data.sonuc[i].name + ' | ' + data.sonuc[i].type_name + '<br />');
+                }
+            }
+        });
+    }
+
+    function addList(type, listid, episode) {
+       // var htmlkodu = '<table><tbody><tr><td>Status</td><td>//Combobox depends on list type</td></tr><tr><td>Score</td><td>//Combobox 1~9</td></tr><tr><td>Eps Seen</td><td> <input type="text" /></td></tr></tbody></table>';
+        var htmlkodu = '<div id="createdtable'+listid+'"><div class="row"><div class="col-md-2">Status</div><div class="col-md-4"><select id="liststatus' + listid + '" name="liststatus' + listid + '"></select></div></div><div class="row"><div class="col-md-2">Score</div><div class="col-md-4"><select id="listscore' + listid + '" name="listscore' + listid + '"><option value="">-- Select --</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option></select></div></div><div class="row"><div class="col-md-2">Eps Seen</div><div class="col-md-4"><input type="text" id="listepseen'+listid+'" /></div></div><input type="button" onclick="ConfirmAdd('+listid+')" value="Add"</div>';
+
+        if ($('#createdtable' + listid).length) {
+            if ($('#createdtable' + listid).is(':visible')) {
+                $('#createdtable' + listid).hide();
+                
+            }
+            else {
+                $('#createdtable' + listid).show();
+            }
+           // $('#createdtable' + listid).exi.empty();
+        }
+        else {
+            $('#table' + listid).after(htmlkodu);
+            $('#liststatus' + listid).statusgetir(type, '/EvrenselKodlar/baglistatusgetir');
+        }
+
+    }
+
+    function ConfirmAdd(listid) {
+        var statusid = $("#liststatus" + listid).val();
+        var listscore = $("#listscore" + listid).val();
+        var epseen = $("#listepseen" + listid).val();
+
+        
+
+       $.ajax({
+            url: '@Url.Action("addtomylist")',
+            type: "POST",
+            dataType: "Json",
+            data: {
+                listid: listid,
+                statusid: statusid,
+                score: listscore,
+                epseen: epseen
+            },
+            success: function (data) {
+                alert(data.Message);
+            },
+            error: function (data) {
+                alert(data.Message);
+            }
+        });
+
+
+
+    }
+    
+    (function ($) {
+        $.fn.statusgetir = function (type, actionPath, settings) {
+
+            if (typeof actionPath == 'undefined') {
+                throw "An action path is requried";
+            }
+
+            var optionTag = '<option></option>';
+            var config = $.extend({}, $.fn.statusgetir.defaults, settings);
+
+            return this.each(function () {
+                var $this = $(this);
+
+                (function () {
+                    var methods = {
+                        clearItems: function () {
+                            $this.empty();
+                            if (!$this.attr("disabled")) {
+                                $this.attr("disabled", "disabled");
+                            }
+                        },
+                        reset: function () {
+                            methods.clearItems();
+                            $this.append($(optionTag)
+                                .attr("value", "")
+                                .text(config.promptText));
+                            $this.trigger('change');
+                        },
+                        initialize: function () {
+                            if ($this.children().size() == 0) {
+                                methods.reset();
+                            }
+                        },
+                        showLoading: function () {
+                            methods.clearItems();
+                            $this.append($(optionTag)
+                                .attr("value", "")
+                                .text(config.loadingText));
+                        },
+                        loaded: function () {
+                            $this.removeAttr("disabled");
+                            $this.trigger('change');
+                        },
+                        showError: function () {
+                            methods.clearItems();
+                            $this.append($(optionTag)
+                                .attr("value", "")
+                                .text(config.errorText));
+                        },
+                        post: function () {
+                            methods.showLoading();
+                            $.isFunction(config.onLoading) && config.onLoading.call($this);
+                            $.ajax({
+                                url: actionPath,
+                                type: 'POST',
+                                dataType: 'json',
+                                data: {listTypes:type},
+                                success: function (data) {
+                                    methods.reset();
+                                    $.each(data, function () {
+                                        $this.append($(optionTag)
+                                            .attr("value", this.Value)
+                                            .text(this.Text));
+                                    });
+                                    methods.loaded();
+                                    $.isFunction(config.onLoaded) && config.onLoaded.call($this);
+                                },
+                                error: function () {
+                                    methods.showError();
+                                }
+                            });
+                        }
+                    };
+                        methods.post();
+                    methods.initialize();
+
+                })();
+            });
+        }
+
+        $.fn.statusgetir.defaults = {
+            promptText: '-- Select --',
+            loadingText: 'Loading ..',
+            errorText: 'Error loading data.',
+            postData: null,
+            onLoading: null,
+            onLoaded: null
+        }
+    })(jQuery);
+
+</script>
+
+<script>
+    $("#urunaraBtn").click(function () {
+        $('#sonuctvseries').empty();
+        $('#sonucmovies').empty();
+        $('#sonucanimes').empty();
+        $('#sonucgames').empty();
+        $('#askdidntfound').empty();
+        $('#sonuctvseries').show();
+        $('#sonucmovies').show();
+        $('#sonucanimes').show();
+        $('#sonucgames').show();
+        $.ajax({
+            url: '@Url.Action("addListSearch")',
+            type: "POST",
+            dataType: "Json",
+            data: {searchvalue: $("#urunaraTxt").val() },
+            success: function (data) {
+                //Fill div with results
+                var syc1 = 0, syc2 = 0, syc3 = 0, syc4 = 0;
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].list_type_id == "3") {
+                        if (syc1 == 0) { $('#sonuctvseries').append('<h3>Tv Series</h3>'); }
+                        if (data[i].aktif == false) {
+                            $('#sonuctvseries').append('<table class="table" id="table' + data[i].list_id + '"><tbody><tr><td><a href="javascript:addList(' + data[i].list_type_id + ',' + data[i].list_id + ',' + data[i].episode + ')">' + data[i].name + '(User Added - Non active)</a></td><td class="text-right col-md-1">' + data[i].episode + '</td></tr></tbody></table>');
+                            syc1 = syc1 + 1;
+                        }
+                        else {
+                            $('#sonuctvseries').append('<table class="table" id="table' + data[i].list_id + '"><tbody><tr><td><a href="javascript:addList(' + data[i].list_type_id + ',' + data[i].list_id + ',' + data[i].episode + ')">' + data[i].name + '</a></td><td class="text-right col-md-1">' + data[i].episode + '</td></tr></tbody></table>');
+                            syc1 = syc1 + 1;
+                        }
+                        
+                    }
+                    else if (data[i].list_type_id == "4") {
+                        if (syc2 == 0) { $('#sonucmovies').append('<h3>Movies</h3><table class="table">'); }
+                        if (data[i].aktif == false) {
+                            $('#sonucmovies').append('<table class="table" id="table' + data[i].list_id + '"><tbody><tr><td><a href="javascript:addList(' + data[i].list_type_id + ',' + data[i].list_id + ',' + data[i].episode + ')">' + data[i].name + '(User Added - Non active)</a></td><td class="text-right col-md-1">' + data[i].episode + '</td></tr></tbody></table>');
+                            syc2 = syc2 + 1;
+                        }
+                        else {
+                            $('#sonucmovies').append('<table class="table" id="table' + data[i].list_id + '"><tbody><tr><td><a href="javascript:addList(' + data[i].list_type_id + ',' + data[i].list_id + ',' + data[i].episode + ')">' + data[i].name + '</a></td><td class="text-right  col-md-1">' + data[i].episode + '</td></tr></tbody></table>');
+                            syc2 = syc2 + 1;
+                        }
+                        
+                    }
+                    else if (data[i].list_type_id == "1") {
+                        if (syc3 == 0) { $('#sonucanimes').append('<h3>Animes</h3><table class="table">'); }
+                        
+                        if (data[i].aktif == false) {
+                            $('#sonucanimes').append('<table class="table" id="table' + data[i].list_id + '"><tbody><tr><td><a href="javascript:addList(' + data[i].list_type_id + ',' + data[i].list_id + ',' + data[i].episode + ')">' + data[i].name + '(User Added - Non active)</a></td><td class="text-right col-md-1">' + data[i].episode + '</td></tr></tbody></table>');
+                            syc3 = syc3 + 1;
+                        }
+                        else {
+                            $('#sonucanimes').append('<table class="table" id="table' + data[i].list_id + '"><tbody><tr><td><a href="javascript:addList(' + data[i].list_type_id + ',' + data[i].list_id + ',' + data[i].episode + ')">' + data[i].name + '</a></td><td class="text-right  col-md-1">' + data[i].episode + '</td></tr></tbody></table>');
+                            syc3 = syc3 + 1;
+                        }
+                        
+                    }
+                    else if (data[i].list_type_id == "2") {
+                        if (syc4 == 0) { $('#sonucgames').append('<h3>Games</h3><table class="table">'); }
+                        if (data[i].aktif == false) {
+                            $('#sonucgames').append('<table class="table" id="table' + data[i].list_id + '"><tbody><tr><td><a href="javascript:addList(' + data[i].list_type_id + ',' + data[i].list_id + ',' + data[i].episode + ')">' + data[i].name + '(User Added - Non active)</a></td><td class="text-right col-md-1">' + data[i].episode + '</td></tr></tbody></table>');
+                            syc4 = syc4 + 1;
+                        }
+                        else {
+                            $('#sonucgames').append('<table class="table" id="table' + data[i].list_id + '"><tbody><tr><td><a href="javascript:addList(' + data[i].list_type_id + ',' + data[i].list_id + ',' + data[i].episode + ')">' + data[i].name + '</a></td><td class="text-right  col-md-1">' + data[i].episode + '</td></tr></tbody></table>');
+                            syc4 = syc4 + 1;
+                        }
+                        
+                    }
+                }
+
+                if (syc1 == 0) { $('#sonuctvseries').hide(); }
+                if (syc2 == 0) { $('#sonucmovies').hide(); }
+                if (syc3 == 0) { $('#sonucanimes').hide(); }
+                if (syc4 == 0) { $('#sonucgames').hide(); }
+                $('#askdidntfound').append("Didn't find the list? Anyway you can still <a href=@Url.Action("addList")><ins>add it and help us.</ins></a>")
+
+            },
+            error: function () { alert('error'); }
+        });
+    });
+</script>

@@ -1,0 +1,26 @@
+﻿<h2>Movies</h2>
+
+<div id="completedmoviesTable"></div>
+<br />
+<div id="plantoplaymoviesTable"></div>
+<br />
+<div id="droppedmoviesTable"></div>
+
+@if (Session["UserName"] != null && Session["UserName"].Equals(ViewBag.username))
+{
+<script type="text/javascript">
+    var username = '@ViewBag.username';
+    $('#completedmoviesTable').jtablelistload(username, '4', '16', 'Completed',1);
+    $('#plantoplaymoviesTable').jtablelistload(username, '4', '18', 'Plan to Watch',1);
+    $('#droppedmoviesTable').jtablelistload(username, '4', '17', 'Dropped',1);
+</script>
+}
+else
+{
+    <script type="text/javascript">
+        var username = '@ViewBag.username';
+        $('#completedmoviesTable').jtablelistload(username, '4', '16', 'Completed',0);
+        $('#plantoplaymoviesTable').jtablelistload(username, '4', '18', 'Plan to Watch',0);
+        $('#droppedmoviesTable').jtablelistload(username, '4', '17', 'Dropped',0);
+    </script>
+}

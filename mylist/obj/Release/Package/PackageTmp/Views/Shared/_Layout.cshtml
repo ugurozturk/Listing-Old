@@ -1,0 +1,106 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="listing,cateloging,reminder">
+    <meta name="description" content="Free to use list reminder. You can easly share your list to others.">
+
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/modernizr")
+
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-42442811-8', 'auto');
+  ga('send', 'pageview');
+
+    </script>
+    
+</head>
+<body>
+    <nav class="navbar navbar-static">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="~/">Home</a>
+                <a class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="glyphicon glyphicon-chevron-down"></span>
+                </a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">TOP List <i class="glyphicon glyphicon-chevron-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="@Url.Content("~/Top/Top100Movie")">Top 100 Movies</a></li>
+                            <li><a href="@Url.Content("~/Top/Top100TvSeries")">Top 100 Series</a></li>
+                            <li><a href="@Url.Content("~/Top/Top100Animes")">Top 100 Animes</a></li>
+                            <li><a href="@Url.Content("~/Top/Top100Games")">Top 100 Games</a></li>
+                        </ul>
+                    </li>
+                    @{
+                        var user = Session["UserName"];
+                        if (user != null)
+                        {
+                            <li><a href="@Url.Content("~/UserPage/" + user)">Profile</a></li>
+                        }
+                    }
+                    <li><a href="@Url.Content("~/Home/About")">About</a></li>
+                    <li><a href="@Url.Content("~/Home/Contact")">Contact</a></li>
+                </ul>
+                <ul class="nav navbar-right navbar-nav">
+                    <li><a href="#"><i class="fa fa-facebook-square"></i>  </a></li>
+                    <li><a href="#"><i class="fa fa-twitter-square"></i> </a></li>
+                    <li><a href="#"><i class="fa fa-linkedin-square"></i></a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-search"></i></a>
+                        <ul class="dropdown-menu" style="padding:12px;">
+                            <form class="form-inline">
+                                <button type="submit" class="btn btn-default pull-right"><i class="glyphicon glyphicon-search"></i></button>
+                                <input type="text" class="form-control pull-left" placeholder="Search">
+                                
+                            </form>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <button href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i> <i class="glyphicon glyphicon-chevron-down"></i></button>
+                        <ul class="dropdown-menu">
+                                  @if (user == null)
+                                  {
+                                    <li> <a href="@Url.Content("~/Login")">Log In</a></li>
+                                    <li> <a href="@Url.Content("~/Register")">Register</a></li>
+                                  }
+                                  else
+                                  {
+                                    <li><a href="@Url.Content("~/List/TvSeries/" +user)" target="_blank">my Tv Series</a></li>
+                                    <li><a href="@Url.Content("~/List/Movies/" +user)" target="_blank">my Movies</a></li>
+                                    <li><a href="@Url.Content("~/List/Animes/" +user)" target="_blank">my Animes</a></li>
+                                    <li><a href="@Url.Content("~/List/Games/" +user)" target="_blank">my Games</a></li>
+                                      <li class="divider"></li>
+                                    <li> <a href="@Url.Content("~/EvrenselKodlar/LogOut")">Log Out</a></li>
+                                  }
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+
+        <div class="container"><p>&copy; @DateTime.Now.Year - Tüm hakları saklıdır.</p></div>
+
+    </div>
+
+    
+    @Scripts.Render("~/bundles/bootstrap")
+    
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="mylistModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="list">
+    <Key>
+      <PropertyRef Name="list_id" />
+    </Key>
+    <Property Name="list_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="varchar" MaxLength="100" />
+    <Property Name="episode" Type="int" />
+    <Property Name="list_type_id" Type="int" Nullable="false" />
+    <Property Name="aktif" Type="bit" Nullable="false" />
+    <Property Name="release_date" Type="datetime" />
+  </EntityType>
+  <EntityType Name="list_type">
+    <Key>
+      <PropertyRef Name="list_type_id" />
+    </Key>
+    <Property Name="list_type_id" Type="int" Nullable="false" />
+    <Property Name="type_name" Type="nvarchar" MaxLength="15" Nullable="false" />
+  </EntityType>
+  <EntityType Name="log_type">
+    <Key>
+      <PropertyRef Name="log_type_id" />
+    </Key>
+    <Property Name="log_type_id" Type="int" Nullable="false" />
+    <Property Name="log_type_name" Type="varchar" MaxLength="24" Nullable="false" />
+  </EntityType>
+  <EntityType Name="logs">
+    <Key>
+      <PropertyRef Name="log_id" />
+    </Key>
+    <Property Name="log_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="log_type_id" Type="int" Nullable="false" />
+    <Property Name="info" Type="varchar" MaxLength="250" />
+    <Property Name="createdDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="user">
+    <Key>
+      <PropertyRef Name="user_id" />
+    </Key>
+    <Property Name="user_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="username" Type="varchar" MaxLength="24" Nullable="false" />
+    <Property Name="password" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="age" Type="int" />
+    <Property Name="email" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="aktif" Type="bit" Nullable="false" />
+    <Property Name="registerdate" Type="datetime" />
+    <Property Name="user_group_id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="user_group">
+    <Key>
+      <PropertyRef Name="user_group_id" />
+    </Key>
+    <Property Name="user_group_id" Type="int" Nullable="false" />
+    <Property Name="group_name" Type="varchar" MaxLength="30" Nullable="false" />
+  </EntityType>
+  <EntityType Name="user_list">
+    <Key>
+      <PropertyRef Name="user_list_id" />
+    </Key>
+    <Property Name="user_list_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="user_id" Type="int" Nullable="false" />
+    <Property Name="list_id" Type="int" Nullable="false" />
+    <Property Name="score" Type="int" />
+    <Property Name="episode_complete" Type="int" Nullable="false" />
+    <Property Name="list_status_id" Type="int" Nullable="false" />
+    <Property Name="addeddate" Type="datetime" />
+    <Property Name="user_tags" Type="varchar" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="user_list_status">
+    <Key>
+      <PropertyRef Name="user_list_status_id" />
+    </Key>
+    <Property Name="user_list_status_id" Type="int" Nullable="false" />
+    <Property Name="status_name" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="list_type_id" Type="int" />
+  </EntityType>
+  <Association Name="FK_list_listtype">
+    <End Role="list_type" Type="Self.list_type" Multiplicity="1" />
+    <End Role="list" Type="Self.list" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="list_type">
+        <PropertyRef Name="list_type_id" />
+      </Principal>
+      <Dependent Role="list">
+        <PropertyRef Name="list_type_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_logs_logtype">
+    <End Role="log_type" Type="Self.log_type" Multiplicity="1" />
+    <End Role="logs" Type="Self.logs" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="log_type">
+        <PropertyRef Name="log_type_id" />
+      </Principal>
+      <Dependent Role="logs">
+        <PropertyRef Name="log_type_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_user_usergroup">
+    <End Role="user_group" Type="Self.user_group" Multiplicity="1" />
+    <End Role="user" Type="Self.user" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="user_group">
+        <PropertyRef Name="user_group_id" />
+      </Principal>
+      <Dependent Role="user">
+        <PropertyRef Name="user_group_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_userlist_list">
+    <End Role="list" Type="Self.list" Multiplicity="1" />
+    <End Role="user_list" Type="Self.user_list" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="list">
+        <PropertyRef Name="list_id" />
+      </Principal>
+      <Dependent Role="user_list">
+        <PropertyRef Name="list_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_userlist_user">
+    <End Role="user" Type="Self.user" Multiplicity="1" />
+    <End Role="user_list" Type="Self.user_list" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="user">
+        <PropertyRef Name="user_id" />
+      </Principal>
+      <Dependent Role="user_list">
+        <PropertyRef Name="user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_userlist_userliststatus">
+    <End Role="user_list_status" Type="Self.user_list_status" Multiplicity="1" />
+    <End Role="user_list" Type="Self.user_list" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="user_list_status">
+        <PropertyRef Name="user_list_status_id" />
+      </Principal>
+      <Dependent Role="user_list">
+        <PropertyRef Name="list_status_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_userliststatus_listtype">
+    <End Role="list_type" Type="Self.list_type" Multiplicity="0..1" />
+    <End Role="user_list_status" Type="Self.user_list_status" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="list_type">
+        <PropertyRef Name="list_type_id" />
+      </Principal>
+      <Dependent Role="user_list_status">
+        <PropertyRef Name="list_type_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="mylistModelStoreContainer">
+    <EntitySet Name="list" EntityType="Self.list" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="list_type" EntityType="Self.list_type" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="log_type" EntityType="Self.log_type" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="logs" EntityType="Self.logs" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="user" EntityType="Self.user" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="user_group" EntityType="Self.user_group" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="user_list" EntityType="Self.user_list" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="user_list_status" EntityType="Self.user_list_status" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_list_listtype" Association="Self.FK_list_listtype">
+      <End Role="list_type" EntitySet="list_type" />
+      <End Role="list" EntitySet="list" />
+    </AssociationSet>
+    <AssociationSet Name="FK_logs_logtype" Association="Self.FK_logs_logtype">
+      <End Role="log_type" EntitySet="log_type" />
+      <End Role="logs" EntitySet="logs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_user_usergroup" Association="Self.FK_user_usergroup">
+      <End Role="user_group" EntitySet="user_group" />
+      <End Role="user" EntitySet="user" />
+    </AssociationSet>
+    <AssociationSet Name="FK_userlist_list" Association="Self.FK_userlist_list">
+      <End Role="list" EntitySet="list" />
+      <End Role="user_list" EntitySet="user_list" />
+    </AssociationSet>
+    <AssociationSet Name="FK_userlist_user" Association="Self.FK_userlist_user">
+      <End Role="user" EntitySet="user" />
+      <End Role="user_list" EntitySet="user_list" />
+    </AssociationSet>
+    <AssociationSet Name="FK_userlist_userliststatus" Association="Self.FK_userlist_userliststatus">
+      <End Role="user_list_status" EntitySet="user_list_status" />
+      <End Role="user_list" EntitySet="user_list" />
+    </AssociationSet>
+    <AssociationSet Name="FK_userliststatus_listtype" Association="Self.FK_userliststatus_listtype">
+      <End Role="list_type" EntitySet="list_type" />
+      <End Role="user_list_status" EntitySet="user_list_status" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

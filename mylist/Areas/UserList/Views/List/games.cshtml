@@ -1,0 +1,37 @@
+﻿<h2>Games</h2>
+
+<div id="playingamesTable"></div>
+<br />
+<div id="completedgameseTable"></div>
+<br />
+<div id="plantoplaygamesTable"></div>
+<br />
+<div id="onholdgamesTable"></div>
+<br />
+<div id="droppedgamesTable"></div>
+@if (Session["UserName"] != null && Session["UserName"].Equals(ViewBag.username))
+{
+<script type="text/javascript">
+    var username = '@ViewBag.username';
+    async.parallel([
+        $('#playingamesTable').jtablelistload(username, '2', '6', 'Playing',1),
+        $('#completedgameseTable').jtablelistload(username, '2', '7', 'Completed',1),
+        $('#plantoplaygamesTable').jtablelistload(username, '2', '8', 'Plan to Play',1),
+        $('#onholdgamesTable').jtablelistload(username, '2', '9', 'On Hold',1),
+        $('#droppedgamesTable').jtablelistload(username, '2', '10', 'Dropped',1),
+    ]);
+</script>
+}
+else
+{
+    <script type="text/javascript">
+        var username = '@ViewBag.username';
+        async.parallel([
+            $('#playingamesTable').jtablelistload(username, '2', '6', 'Playing',0),
+            $('#completedgameseTable').jtablelistload(username, '2', '7', 'Completed',0),
+            $('#plantoplaygamesTable').jtablelistload(username, '2', '8', 'Plan to Play',0),
+            $('#onholdgamesTable').jtablelistload(username, '2', '9', 'On Hold',0),
+            $('#droppedgamesTable').jtablelistload(username, '2', '10', 'Dropped',0),
+        ]);
+    </script>
+}

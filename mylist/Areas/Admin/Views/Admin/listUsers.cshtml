@@ -1,0 +1,107 @@
+﻿
+@{
+    ViewBag.Title = "listUsers";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<style>
+    select{
+        color:black
+    }
+</style>
+<div id="userListContainer"></div>
+<script type="text/javascript">
+ 
+    $(document).ready(function () {
+
+        //Prepare jtable plugin
+        $('#userListContainer').jtable({
+            title: 'Student List',
+            paging: true,
+            sorting: true,
+            defaultSorting: 'username ASC',
+            selecting: true, //Enable selecting
+            multiselect: false, //Allow multiple selecting
+            selectingCheckboxes: true, //Show checkboxes on first column
+            //selectOnRowClick: false, //Enable this to only select using checkboxes
+            actions: {
+                listAction: '@Url.Action("jListUsers")',
+                deleteAction: '@Url.Action("jDelUser")',
+                updateAction: '@Url.Action("jUpdateUser")',
+                createAction: '@Url.Action("jCreateUser")'
+            },
+            fields: {
+                user_id: {
+                    key: true,
+                    create: false,
+                    edit: false,
+                    list: false
+                },
+                username: {
+                    title: 'userName',
+                    width: '23%',
+                    inputClass: 'validate[required]'
+                },
+                age: {
+                    title: 'Age',
+                    list: false,
+                    edit: true,
+                    create: true
+                },
+                email: {
+                    title: 'Email address',
+                    list: true,
+                    inputClass: 'validate[required,custom[email]]'
+                },
+                password: {
+                    title: 'User Password',
+                    type: 'password',
+                    list: false,
+                    inputClass: 'validate[required]'
+                },
+                aktif: {
+                    title: 'Status',
+                    width: '12%',
+                    type: 'checkbox',
+                    values: { 'false': 'Passive', 'true': 'Active' },
+                    defaultValue: 'true'
+                },
+                user_group_id: {
+                    title: 'Group',
+                    width: '15%',
+                    options: '@Url.Action("getUserGroupOptions")'
+                },
+                registerdate: {
+                    title: 'Record date',
+                    width: '15%',
+                    type: 'date',
+                    displayFormat: 'yy-mm-dd',
+                    create: false,
+                    edit: false,
+                    sorting: false
+                }
+            },
+            //Register to selectionChanged event to hanlde events
+            selectionChanged: function () {
+                //Get all selected rows
+                var $selectedRows = $('#userListContainer').jtable('selectedRows');
+
+                $('#SelectedRowList').empty();
+                if ($selectedRows.length > 0) {
+                    //Show selected rows
+                    $selectedRows.each(function () {
+                        var record = $(this).data('record');
+                        $('#SelectedRowList').append(
+                        '<b>StudentId</b>: ' + record.StudentId +
+                        '<br /><b>Name</b>:' + record.Name + '<br /><br />'
+                        );
+                    });
+                }
+            }
+        });
+
+        //Load student list from server
+        $('#userListContainer').jtable('load');
+    });
+    
+</script>
+

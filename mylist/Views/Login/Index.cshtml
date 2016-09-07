@@ -1,0 +1,31 @@
+﻿@model mylist.Models.user
+
+
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Login</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true, "Login Failed, try again.");
+    <div>
+        <fieldset>
+            <text style="color:red"> @ViewBag.error</text>
+            
+            <div><label for="email"> Email or Username </label></div>
+            <div> @Html.TextBoxFor(u => u.email) </div>
+            @Html.ValidationMessageFor(u => u.email)
+
+            <div> @Html.LabelFor(u => u.password)</div>
+            <div> @Html.PasswordFor(u => u.password) </div>
+            @Html.ValidationMessageFor(u => u.password)
+            
+            <input type="submit" value="Log In" />
+        </fieldset>
+    </div>
+}
+
+

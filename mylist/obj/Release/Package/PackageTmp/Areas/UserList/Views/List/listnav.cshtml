@@ -1,0 +1,57 @@
+﻿
+<div class="navbar navbar-static" style="min-height:30px">
+    <input type="hidden" id="username" />
+    <div class="container">
+
+        @if (Session["UserName"] != null) { 
+        <input type="button" id="addtolistbtn" value="Add to list" />
+        }
+        else
+        {
+        <input type="button" id="loginBtn" value="Login" />
+        }
+        
+        <span class="Listspan" style="float:right; ">
+            <input type="button" id="animebtn" value="Animes" />
+            <input type="button" id="moviebtn" value="Movies" />
+            <input type="button" id="tvseriesbtn" value="Tv Series" />
+            <input type="button" id="gamesbtn" value="Games" />
+        </span>
+
+
+    </div>
+</div>
+
+<script>
+
+    var username = '@ViewBag.username';
+
+    $("#animebtn").click(function() {
+        window.location.href = '/List/Animes/' + username;
+        return false;
+    });
+
+    $("#moviebtn").click(function () {
+        window.location.href = '/List/Movies/' + username;
+        return false;
+    });
+
+    $("#tvseriesbtn").click(function () {
+        window.location.href = '/List/TvSeries/' + username;
+        return false;
+    });
+
+    $("#gamesbtn").click(function () {
+        window.location.href = '/List/Games/' + username;
+        return false;
+    });
+
+    $("#loginBtn").click(function () {
+        window.location.href = '/Login/';
+        return false;
+    });
+
+   // $("moviebtn")
+    //$("tvseriesbtn")
+    //$("gamesbtn")
+</script>

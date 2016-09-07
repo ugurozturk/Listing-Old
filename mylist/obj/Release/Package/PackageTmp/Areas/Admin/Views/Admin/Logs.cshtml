@@ -1,0 +1,69 @@
+﻿@{
+    ViewBag.Title = "Logs";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    select {
+        color: black;
+    }
+</style>
+
+<div id="listLogsContainer"></div>
+<script type="text/javascript">
+ 
+    $(document).ready(function () {
+
+        //Prepare jtable plugin
+        $('#listLogsContainer').jtable({
+            title: 'Student List',
+            paging: true,
+            pageSize: 20,
+            sorting: true,
+            defaultSorting: 'log_id DESC',
+            selecting: true, //Enable selecting
+            multiselect: false, //Allow multiple selecting
+            selectingCheckboxes: true, //Show checkboxes on first column
+            //selectOnRowClick: false, //Enable this to only select using checkboxes
+            actions: {
+                listAction: '@Url.Action("listLogs")'
+            },
+            fields: {
+                log_id: {
+                    key: true,
+                    create: false,
+                    edit: false,
+                    list: false
+                },
+                log_type_name: {
+                    title: 'Log Type',
+                    width: '23%',
+                    create: false,
+                    edit: false,
+                    list: true
+                },
+                info: {
+                    title: 'Info',
+                    width: '15%',
+                    create: false,
+                    edit: false,
+                    list: true
+                },
+                createdDate: {
+                    title: 'Created Date',
+                    width: '15%',
+                    type: 'date',
+                    displayFormat: 'dd/mm/yy',
+                    create: false,
+                    edit: false,
+                    list: true
+                }
+            },
+        });
+
+        //Load student list from server
+        $('#listLogsContainer').jtable('load');
+    });
+    
+</script>
+

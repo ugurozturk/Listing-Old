@@ -1,0 +1,36 @@
+﻿<h2>Animes</h2>
+
+<div id="watchinganimesTable"></div>
+<br />
+<div id="completeanimeTable"></div>
+<br />
+<div id="plantowatchanimeTable"></div>
+<br />
+<div id="onholdanimeTable"></div>
+<br />
+<div id="droppedanimeTable"></div>
+@if(Session["UserName"] != null && Session["UserName"].Equals(ViewBag.username)){
+<script type="text/javascript">
+    var username = '@ViewBag.username';
+    $(document).ready(function () {
+        $('#watchinganimesTable').jtablelistload(username, '1', '1', 'Watching',1);
+        $('#completeanimeTable').jtablelistload(username, '1', '2', 'Completed',1);
+        $('#plantowatchanimeTable').jtablelistload(username, '1', '5', 'Plan to Watch',1);
+        $('#onholdanimeTable').jtablelistload(username, '1', '3', 'On Hold',1);
+        $('#droppedanimeTable').jtablelistload(username, '1', '4', 'Dropped',1);
+    });
+</script>
+}
+else
+{
+    <script type="text/javascript">
+        var username = '@ViewBag.username';
+        $(document).ready(function () {
+            $('#watchinganimesTable').jtablelistload(username, '1', '1', 'Watching', 0);
+            $('#completeanimeTable').jtablelistload(username, '1', '2', 'Completed', 0);
+            $('#plantowatchanimeTable').jtablelistload(username, '1', '5', 'Plan to Watch', 0);
+            $('#onholdanimeTable').jtablelistload(username, '1', '3', 'On Hold', 0);
+            $('#droppedanimeTable').jtablelistload(username, '1', '4', 'Dropped', 0);
+        });
+    </script>
+}

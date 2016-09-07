@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="df69e1cc1aef47d4bba81f07250f4725" Name="Diagram1">
+        <EntityTypeShape EntityType="mylistModel.list" Width="1.5" PointX="3" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="mylistModel.list_type" Width="1.5" PointX="0.75" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="mylistModel.log_type" Width="1.5" PointX="5.75" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="mylistModel.logs" Width="1.5" PointX="8" PointY="6.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="mylistModel.user" Width="1.5" PointX="3" PointY="8.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="mylistModel.user_group" Width="1.5" PointX="0.75" PointY="9.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="mylistModel.user_list" Width="1.5" PointX="5.25" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="mylistModel.user_list_status" Width="1.5" PointX="3" PointY="4.75" IsExpanded="true" />
+        <AssociationConnector Association="mylistModel.FK_list_listtype" ManuallyRouted="false" />
+        <AssociationConnector Association="mylistModel.FK_userlist_list" ManuallyRouted="false" />
+        <AssociationConnector Association="mylistModel.FK_userliststatus_listtype" ManuallyRouted="false" />
+        <AssociationConnector Association="mylistModel.FK_logs_logtype" ManuallyRouted="false" />
+        <AssociationConnector Association="mylistModel.FK_user_usergroup" ManuallyRouted="false" />
+        <AssociationConnector Association="mylistModel.FK_userlist_user" ManuallyRouted="false" />
+        <AssociationConnector Association="mylistModel.FK_userlist_userliststatus" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

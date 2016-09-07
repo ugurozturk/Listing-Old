@@ -1,0 +1,37 @@
+﻿@model mylist.Models.user
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Register</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true, "Register Failed, try again.");
+    <div>
+        <fieldset>
+            <text style="color:red"> @ViewBag.error</text>
+            <text style="color:green"> @ViewBag.success</text>
+            <div> @Html.LabelFor(u => u.username) </div>
+            <div> @Html.TextBoxFor(u => u.username) </div>
+            @Html.ValidationMessageFor(u => u.username)
+
+            <div> @Html.LabelFor(u => u.password)</div>
+            <div> @Html.PasswordFor(u => u.password) </div>
+            @Html.ValidationMessageFor(u => u.password)
+
+            <div> @Html.LabelFor(u => u.email) </div>
+            <div> @Html.TextBoxFor(u => u.email) </div>
+            @Html.ValidationMessageFor(u => u.email)
+
+            <div> @Html.LabelFor(u => u.age) </div>
+            <div> @Html.TextBoxFor(u => u.age) </div>
+            @Html.ValidationMessageFor(u => u.age)
+            <br />
+            <input type="submit" value="Register" />
+        </fieldset>
+    </div>
+}
+

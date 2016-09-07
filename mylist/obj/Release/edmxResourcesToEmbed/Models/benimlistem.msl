@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="mylistModelStoreContainer" CdmEntityContainer="mylistEntities">
+    <EntitySetMapping Name="list">
+      <EntityTypeMapping TypeName="mylistModel.list">
+        <MappingFragment StoreEntitySet="list">
+          <ScalarProperty Name="list_id" ColumnName="list_id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="episode" ColumnName="episode" />
+          <ScalarProperty Name="list_type_id" ColumnName="list_type_id" />
+          <ScalarProperty Name="aktif" ColumnName="aktif" />
+          <ScalarProperty Name="release_date" ColumnName="release_date" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="list_type">
+      <EntityTypeMapping TypeName="mylistModel.list_type">
+        <MappingFragment StoreEntitySet="list_type">
+          <ScalarProperty Name="list_type_id" ColumnName="list_type_id" />
+          <ScalarProperty Name="type_name" ColumnName="type_name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="log_type">
+      <EntityTypeMapping TypeName="mylistModel.log_type">
+        <MappingFragment StoreEntitySet="log_type">
+          <ScalarProperty Name="log_type_id" ColumnName="log_type_id" />
+          <ScalarProperty Name="log_type_name" ColumnName="log_type_name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="logs">
+      <EntityTypeMapping TypeName="mylistModel.logs">
+        <MappingFragment StoreEntitySet="logs">
+          <ScalarProperty Name="log_id" ColumnName="log_id" />
+          <ScalarProperty Name="log_type_id" ColumnName="log_type_id" />
+          <ScalarProperty Name="info" ColumnName="info" />
+          <ScalarProperty Name="createdDate" ColumnName="createdDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="user">
+      <EntityTypeMapping TypeName="mylistModel.user">
+        <MappingFragment StoreEntitySet="user">
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+          <ScalarProperty Name="username" ColumnName="username" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="age" ColumnName="age" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="aktif" ColumnName="aktif" />
+          <ScalarProperty Name="registerdate" ColumnName="registerdate" />
+          <ScalarProperty Name="user_group_id" ColumnName="user_group_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="user_group">
+      <EntityTypeMapping TypeName="mylistModel.user_group">
+        <MappingFragment StoreEntitySet="user_group">
+          <ScalarProperty Name="user_group_id" ColumnName="user_group_id" />
+          <ScalarProperty Name="group_name" ColumnName="group_name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="user_list">
+      <EntityTypeMapping TypeName="mylistModel.user_list">
+        <MappingFragment StoreEntitySet="user_list">
+          <ScalarProperty Name="user_list_id" ColumnName="user_list_id" />
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+          <ScalarProperty Name="list_id" ColumnName="list_id" />
+          <ScalarProperty Name="score" ColumnName="score" />
+          <ScalarProperty Name="episode_complete" ColumnName="episode_complete" />
+          <ScalarProperty Name="list_status_id" ColumnName="list_status_id" />
+          <ScalarProperty Name="addeddate" ColumnName="addeddate" />
+          <ScalarProperty Name="user_tags" ColumnName="user_tags" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="user_list_status">
+      <EntityTypeMapping TypeName="mylistModel.user_list_status">
+        <MappingFragment StoreEntitySet="user_list_status">
+          <ScalarProperty Name="user_list_status_id" ColumnName="user_list_status_id" />
+          <ScalarProperty Name="status_name" ColumnName="status_name" />
+          <ScalarProperty Name="list_type_id" ColumnName="list_type_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
